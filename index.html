@@ -268,6 +268,16 @@ dt::before{margin-right:9px;vertical-align:-1px}
 .stars li::before{position:absolute;left:2px;top:50%;margin-top:-6px}
 #brand img{height:56px;width:auto;display:block}
 @media(max-width:760px){#brand img{height:46px}}
+.ann span{cursor:pointer}
+.ann span::after{content:"";position:absolute;inset:-9px -10px}
+.ann u::before{content:"";position:absolute;top:-12px;width:25px;height:25px;border:1.5px solid var(--gold);border-radius:50%;opacity:0;transform:scale(.4);transition:opacity .2s,transform .25s}
+.ann.L u::before{right:-12px}.ann.R u::before{left:-12px}
+.ann .cl{position:absolute;top:50%;width:150px;height:150px;border-radius:50%;object-fit:cover;border:1.5px solid var(--gold);box-shadow:0 10px 30px rgba(0,0,0,.55);opacity:0;transform:translateY(-50%) scale(.8);transition:opacity .22s,transform .25s;pointer-events:none;z-index:6;background:#E9EDF8}
+.ann.L .cl{right:calc(100% + 18px)}.ann.R .cl{left:calc(100% + 18px)}
+.ann.on u::before{opacity:1;transform:scale(1)}
+.ann.on .cl{opacity:1;transform:translateY(-50%) scale(1)}
+@media(hover:hover){.ann:hover u::before{opacity:1;transform:scale(1)}.ann:hover .cl{opacity:1;transform:translateY(-50%) scale(1)}}
+@media(max-width:760px){.ann.L .cl,.ann.R .cl{position:fixed;left:50%;right:auto;top:auto;bottom:28px;width:180px;height:180px;transform:translateX(-50%) scale(.8)}.ann.on .cl{transform:translateX(-50%) scale(1)}}
 </style>
 </head>
 <body>
@@ -313,7 +323,7 @@ dt::before{margin-right:9px;vertical-align:-1px}
 <h3>三視圖</h3>
 <div class="wide" id="tv"><div class="ph">三視圖橫圖<br>製作中</div></div><p class="swipe">左右滑動查看完整設定圖</p>
 <h3>設計細節</h3>
-<div class="detail"><div class="fig"><img class="mb" src="design-detail.webp" alt="正面設計細節"><div class="ann L" style="top:11%;--x:38%"><u></u><span>星星髮夾</span></div><div class="ann R" style="top:6.5%;--x:62%"><u></u><span>星芒髮飾</span></div><div class="ann R" style="top:22%;--x:50%"><u></u><span>十字項鍊</span></div><div class="ann R" style="top:45.5%;--x:64%"><u></u><span>星芒掛飾</span></div><div class="ann L" style="top:92%;--x:39%"><u></u><span>厚底長靴</span></div></div></div>
+<div class="detail"><div class="fig"><img class="mb" src="design-detail.webp" alt="正面設計細節"><div class="ann L" style="top:11%;--x:38%"><u></u><span>星芒髮飾<img class="cl" src="detail-hairstar.webp" alt="星芒髮飾特寫"></span></div><div class="ann R" style="top:22%;--x:50%"><u></u><span>十字項鍊<img class="cl" src="detail-necklace.webp" alt="十字項鍊特寫"></span></div><div class="ann R" style="top:45.5%;--x:64%"><u></u><span>星芒掛飾<img class="cl" src="detail-charm.webp" alt="星芒掛飾特寫"></span></div><div class="ann L" style="top:92%;--x:39%"><u></u><span>厚底長靴<img class="cl" src="detail-boots.webp" alt="厚底長靴特寫"></span></div></div></div>
 <h3>二創與素材</h3>
 <p style="color:var(--mute);margin-bottom:24px">喜歡月汐、想畫圖或剪片的朋友，歡迎先看看下面的說明。</p>
 <p style="font-size:14px;color:var(--mute);margin-bottom:12px">角色色票（點一下複製色碼）</p>
@@ -395,8 +405,8 @@ dt::before{margin-right:9px;vertical-align:-1px}
 const SITE={
  email:'kyrakysundia@gmail.com',
  links:{youtube:'https://www.youtube.com/@kyra_kysundia',twitch:'https://www.twitch.tv/kyra_kysundia',opay:'https://payment.opay.tw/Broadcaster/Donate/C3922F0390A67704EEF29B1CA265F456',x:'https://x.com/Kyra_Kysundia',instagram:'https://www.instagram.com/kyra_kysundia',discord:'https://discord.gg/FQhhkMtU6z',marshmallow:'https://marshmallow-qa.com/x9r4h2becbo81p?t=NO5hnI&utm_medium=url_text&utm_source=promotion'},
- logo:'logo.png',                    // 例如 'logo.png'
- threeview:'three-view.jpg'                // 例如 'three-view.png'
+ logo:'logo.png',                    // 例如 'images/logo.png'
+ threeview:'three-view.jpg'                // 例如 'images/three-view.png'
 };
 /* ===================================== */
 const secs=[...document.querySelectorAll('section')],tabs=[...document.querySelectorAll('nav [data-t]')];
@@ -430,6 +440,8 @@ i.addEventListener('click',e=>{if(!T())return;e.stopPropagation();const was=i.cl
 document.addEventListener('click',()=>{if(T())imgs.forEach(x=>x._set(false))})})();
 document.querySelectorAll('.sw').forEach(b=>b.onclick=()=>{const h=b.dataset.hex,l=b.querySelector('em');const done=()=>{l.textContent='已複製';setTimeout(()=>{l.textContent=h},1200)};const fb=()=>{const t=document.createElement('textarea');t.value=h;document.body.appendChild(t);t.select();try{document.execCommand('copy')}catch(e){}t.remove();done()};if(navigator.clipboard)navigator.clipboard.writeText(h).then(done,fb);else fb()});
 const heart=document.getElementById('heart'),eg4=document.querySelectorAll('#emote .grid img')[3];if(heart&&eg4)heart.src=eg4.src;
+document.querySelectorAll('.ann span').forEach(sp=>sp.addEventListener('click',e=>{e.stopPropagation();const a=sp.parentElement,was=a.classList.contains('on');document.querySelectorAll('.ann.on').forEach(x=>x.classList.remove('on'));if(!was)a.classList.add('on')}));
+document.addEventListener('click',()=>document.querySelectorAll('.ann.on').forEach(x=>x.classList.remove('on')));
 show('home');
 </script>
 </body>
